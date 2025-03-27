@@ -2,6 +2,9 @@ s.boot;
 
 FreqScope.new;
 
+
+//2.1: Subtractive and Additive Synthesis
+
 //Subtractive Synthesis
 {WhiteNoise.ar(0.1)}.scope;
 
@@ -112,7 +115,53 @@ var n = 10;
 {Mix.ar(SinOsc.ar(250*(1..n), 0, 1/n))}.scope;
 )
 
+//2.2: Mul and Add
+
+//Mul
+{SinOsc.ar(mul:0.1)}.scope;
+{SinOsc.ar(mul: 2.0)}.scope;
+{SinOsc.ar(mul: MouseY.kr(1.0, 0.1))}.scope;
+
+//Add
+{SinOsc.ar(mul:0.1, add: MouseY.kr(0.9, -0.9))}.scope;
+
+(
+{
+	var cutoff = SinOsc.ar(1, mul: MouseX.kr(0.0, 1700.0), add: 2000.0);
+	LPF.ar(WhiteNoise.ar, freq: cutoff);
+}.scope;
+)
+
+
+//shortcut for mul and add : * +
+{0.1 * SinOsc.ar}.scope;
+{0.1 * SinOsc.ar + 0.5}.scope;
 
 
 
+//filter example rewritten
+(
+{
+	var cutoff = SinOsc.ar(1) * 1700.0 + 2000.0;
+	LPF.ar(WhiteNoise.ar, freq: cutoff);
+}.scope;
+)
 
+
+//addressing arguments
+{SinOsc.ar(440, 0.0, 0.1, 0.0)}.scope;
+
+{SinOsc.ar(MouseX.kr(440, 880), 0.0, 0.1, 0.0)}.scope;
+
+{SinOsc.ar(MouseX.kr(440, 880), mul: 0.1)}.scope;
+
+
+//same things
+{SinOsc.ar(440, 0.0, 0.1)}.scope;
+{SinOsc.ar(mul: 0.1)}.scope;
+{0.1*SinOsc.ar}.scope;
+{SinOsc.ar(440, mul: -20.dbamp)}.scope;
+
+
+//a note on modulation
+{SinOsc.ar(SinOsc.ar(3, mul: 40, add: 440), 0, 0.1)}.scope;
