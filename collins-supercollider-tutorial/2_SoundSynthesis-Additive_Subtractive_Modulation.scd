@@ -165,3 +165,15 @@ var n = 10;
 
 //a note on modulation
 {SinOsc.ar(SinOsc.ar(3, mul: 40, add: 440), 0, 0.1)}.scope;
+
+
+//2.3: Controlling Synths
+a = {SinOsc.ar(440)*0.1}.play;
+a.run(false);
+a.run;
+a.free;
+
+//Arguments
+a  = {arg freq =440, amp = 0.1; SinOsc.ar(freq)* amp}.play;
+a.set(\freq, rrand(220, 440), \amp, rrand(0.05, 0.2));
+a.free;
