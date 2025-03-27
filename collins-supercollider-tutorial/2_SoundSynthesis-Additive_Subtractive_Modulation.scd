@@ -177,3 +177,191 @@ a.free;
 a  = {arg freq =440, amp = 0.1; SinOsc.ar(freq)* amp}.play;
 a.set(\freq, rrand(220, 440), \amp, rrand(0.05, 0.2));
 a.free;
+
+
+//2.3: Modulation Synthesis
+
+//Ring Modulation
+(
+{
+	var carrier, modulator, carrfreq, modfreq;
+
+	carrfreq = MouseX.kr(440, 5000, 'exponential');
+	modfreq = MouseY.kr(1, 5000, 'exponential');
+
+	carrier = SinOsc.ar(carrfreq, 0, 0.5);
+	modulator = SinOsc.ar(modfreq, 0, 0.5);
+
+	carrier * modulator;
+
+}.scope;
+)
+
+
+//Amplitude Modulation
+(
+{
+	var carrier, modulator, carrfreq, modfreq;
+
+	carrfreq = MouseX.kr(440, 5000, 'exponential');
+	modfreq = MouseY.kr(1, 5000, 'exponential');
+
+	carrier = SinOsc.ar(carrfreq, 0, 0.5);
+	modulator = SinOsc.ar(modfreq, 0, 0.25, 0.25);
+
+	carrier * modulator;
+}.scope;
+)
+
+//Frequency Modulation
+(
+var w, carrfreqslider, modfreqslider, moddepthslider, synth;
+
+w = Window("frequency modulation", Rect(100, 400, 400, 300));
+w.view.decorator = FlowLayout(w.view.bounds);
+
+synth = {
+	|carrfreq=440, modfreq=1, moddepth=0.01|
+	SinOsc.ar(carrfreq + (moddepth*SinOsc.ar(modfreq)), 0, 0.25)
+}.scope;
+
+carrfreqslider = EZSlider(w, 300@50, "carrfreq", ControlSpec(20, 5000, 'exponential', 10, 440), {
+	|ez|
+	synth.set(\carrfreq, ez.value)
+});
+w.view.decorator.nextLine;
+
+modfreqslider = EZSlider(w, 300@50, "modfreq", ControlSpec(1, 5000, 'exponential', 1, 1), {
+	|ez|
+	synth.set(\modfreq, ez.value)
+});
+w.view.decorator.nextLine;
+
+moddepthslider = EZSlider(w, 300@50, "moddepth", ControlSpec(0.01, 5000, 'exponential', 0.01, 0.01), {
+	|ez|
+	synth.set(\moddepth, ez.value)
+});
+
+w.front;
+)
+
+
+(
+var w, carrfreqslider, modfreqslider, modindexslider, synth;
+
+w = Window("frequency modulation vs. modulation index", Rect(100, 400, 400, 300));
+w.view.decorator = FlowLayout(w.view.bounds);
+
+synth = {
+	|carrfreq = 440, modfreq = 1, modindex = 0|
+	SinOsc.ar(carrfreq + (modindex*modfreq*SinOsc.ar(modfreq)), 0, 0.25)
+}.scope;
+
+carrfreqslider = EZSlider(w, 300@50, "carrfreq", ControlSpec(20, 5000, 'exponential', 10, 440), {
+	|ez|
+	synth.set(\modfreq, ez.value)
+});
+w.view.decorator.nextLine;
+
+modfreqslider = EZSlider(w, 300@50, "modfreq", ControlSpec(20, 5000, 'exponential', 1, 1), {
+	|ez|
+	synth.set(\modfreq, ez.value)
+});
+w.view.decorator.nextLine;
+
+modindexslider = EZSlider(w, 300@50, "modindex", ControlSpec(0.0, 1.0, 'linear', 0.01, 0.0), {
+	|ez|
+	synth.set(\modindex, ez.value)
+});
+
+w.front;
+)
+
+
+//via mouse
+(
+{
+	var modfreq, modindex;
+
+	modfreq = MouseX.kr(1, 440, 'exponential');
+	modindex = MouseY.kr(0.0, 10.0);
+
+	SinOsc.ar(SinOsc.ar(modfreq, 0, modfreq * modindex, 440), 0, 0.25)
+}.scope;
+)
+
+//Moore: Elements of Computer Music
+(
+{
+	var carrfreq, modfreq, harmonicity, modindex;
+	carrfreq = 440;
+	harmonicity = MouseX.kr(0, 10).round(1);
+	modindex = MouseY.kr(0.0, 10.0);
+
+	modfreq = carrfreq * harmonicity;
+
+	SinOsc.ar(carrfreq + (SinOsc.ar(modfreq) * modfreq * modindex), 0.0, 0.1);
+
+}.scope;
+)
+
+
+//Phase modulation
+(
+var w, carrfreqslider, modfreqslider, modindexslider, synth;
+var conversion = 2pi/(s.sampleRate);
+
+w = Window("phase modulation via modulation index", Rect(100, 400, 400, 300));
+w.view.decorator = FlowLayout(w.view.bounds);
+
+synth = {
+	|carrfreq=440, modfreq=1, modindex=0|
+	SinOsc.ar(carrfreq, ((modfreq*modindex)*conversion*SinOsc.ar(modfreq)), 0.25)
+}.scope;
+
+carrfreqslider = EZSlider(w, 300@50, "carrfreq", ControlSpec(20, 5000, 'exponential', 10, 440), {
+	|ez|
+	synth.set(\carrfreq, ez.value)
+});
+w.view.decorator.nextLine;
+
+modfreqslider = EZSlider(w, 300@50, "modfreq", ControlSpec(1, 5000, 'exponential', 1, 1), {
+	|ez|
+	synth.set(\modfreq, ez.value)
+});
+w.view.decorator.nextLine;
+
+modindexslider = EZSlider(w, 300@50, "modindex", ControlSpec(0.0, 100.0, 'linear', 0.01, 0.0), {
+	|ez|
+	synth.set(\modindex, ez.value)
+});
+
+w.front;
+)
+
+//PM via mouse control
+
+(
+{
+	var modfreq, modindex, conversion;
+
+	modfreq = MouseX.kr(1, 1000, 'exponential');
+	modindex = MouseY.kr(0.0, 100.0);
+	conversion = 2pi/(s.sampleRate);
+
+	SinOsc.ar(0, Phasor.ar(0,440*conversion,0,2pi)+( (modfreq*modindex)*conversion*SinOsc.ar(modfreq)), 0.25)
+
+
+}.scope
+)
+
+
+
+
+
+
+
+
+
+
+
