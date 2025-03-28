@@ -1,4 +1,7 @@
 //Patterns
+Server.killAll;
+s.boot;
+Server.default.options.device()
 (
 a  = 7.asStream;
 a.postln;
@@ -111,7 +114,7 @@ SynthDef(\help_SPE2, {
 }).send(s);
 )
 
-(
+ ≥(
 //streams as sequences of pitches
 var pattern, streams, dur, durDiff;
 dur = 1/7;

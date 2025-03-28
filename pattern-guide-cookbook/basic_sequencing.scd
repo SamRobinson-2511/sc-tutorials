@@ -24,7 +24,6 @@ p = Pbind(
 )
 
 //3. Recognize pedal point
-
 (
 p = Pbind(
     \scale, #[0, 2, 3, 5, 7, 8, 10],
@@ -34,3 +33,20 @@ p = Pbind(
     \dur, 0.25
 ).play;
 )
+
+//Multichannel expansion
+
+(
+p = Pbind(
+	\degree, Pseries(7, Pwhite(1, 3, inf) * Prand(#[-1,1], inf), inf).fold(0, 14) +
+	Prand(#[[0, -2, -4], [0, -3, -5], [0, -2, -5], [0, -1, -4]], inf),
+	\dur, Pwrand(#[1, 0.5], #[0.8, 0.2], inf)
+).play;
+)
+p.stop;
+
+//Using custom SynthDefs (including unpitched SynthDefs)
+(
+b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11/wlk01.wav");
+)
+b.play;
