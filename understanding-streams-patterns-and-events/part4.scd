@@ -103,6 +103,85 @@ Task({
 }).play;
 )
 
+//Events
+//Value Patterns, Event Patterns, and Pbind
+Pbind(\freq, Pseq([440, 880])).play;
+
+
+t = Pbind(\freq, Pseq([440, 880])).asStream;
+t.next(Event.default);
+t.next(Event.default);
+t.next(Event.default);
+
+//Event Stream Player
+
+//SC3
+(
+var pattern, stream;
+pattern = Pbind(
+	\xyz, Pseq([1,2,3])
+);
+
+stream = pattern.asStream;
+
+4.do({stream.next(Event.new).postln});
+)
+
+(
+var pattern, stream;
+pattern = Pbind(
+	\abc, Prand([6, 7, 8, 9], inf),
+	\xyz, Pseq([1, 2, 3], 2),
+	\uuu, 999
+);
+stream = pattern.asStream;
+
+7.do({stream.next(Event.new).postln});
+)
+
+
+//Using List Patterns
+(
+var pattern, stream;
+pattern = Pseq([
+	Pbind( \abc, Pseq([1,2,3])),
+	Pbind( \def, Pseq([4, 5, 6])),
+	Pbind( \xyz, Pseq([7, 8, 9]))
+]);
+stream = pattern.asStream;
+10.do({ stream.next(Event.new).postln});
+)
+
+(
+var pattern, stream;
+pattern = Prand([
+	Pbind(\abc, Pseq([1,2,3])),
+	Pbind(\def, Pseq([4,5,6])),
+	Pbind(\xyz, Pseq([7,8,9]))
+], 3);
+stream = pattern.asStream;
+10.do({stream.next(Event.new).postln});
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
