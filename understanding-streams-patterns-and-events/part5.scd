@@ -65,12 +65,97 @@ Pbind(
 )
 
 
+        \dur, 0.15,
+        \ctranspose, 0,
+        \degree, notes
+    ),
+    Pbind(
+        \dur, 0.15,
+        \ctranspose, 3,
+        \degree, notes
+    ),
+    Pbind(
+        \dur, 0.15,
+        \ctranspose, -3,
+        \degree, notes
+    )
+], inf).play
+)
 
 
+(
+// frequency detuning
+var notes;
+notes = Pseq([ Pshuf(#[-7,-3,0,2,4,7], 4), Pseq([0,1,2,3,4,5,6,7]) ], 1);
+Pseq([
+    Pbind(
+        \dur, 0.15,
+        \detune, 0,
+        \degree, notes
+    ),
+    Pbind(
+        \dur, 0.15,
+        \detune, 20,
+        \degree, notes
+    ),
+    Pbind(
+        \dur, 0.15,
+        \detune, 40,
+        \degree, notes
+    )
+], inf).play
+)
 
 
+(
+// chords. If an Array of pitches is returned by a Stream for pitch, then a chord
+// will be played.
+Pbind(
+    \dur, 0.15,
+    \degree, Pseq([
+        Pshuf(#[-7,-3,0,2,4,7], 4)+[0,4],
+        Pseq( [0,1,2,3,4,5,6,7] )+[0,2]
+    ], inf)
+).play
+)
 
 
+(
+// composing in non 12 equal temperaments. 72 tone equal temp.
+Pbind(
+    \stepsPerOctave, 72,
+    \note, Pseq([
+            // 1/1, 7/6, 3/2, 7/4, 9/8
+        Pseq([ [0,16,42,58,84], Pseq([ 0, 16, 42, 58, 72, 84 ], 2), [0,16,42,58,84] ], 1),
+            // 1/1, 6/5, 3/2, 9/5, 9/8
+        Pseq([ [0,19,42,61,84], Pseq([ 0, 19, 42, 61, 72, 84 ], 2), [0,19,42,61,84] ], 1),
+            // 1/1, 5/4, 3/2, 15/8, 9/8
+        Pseq([ [0,23,42,65,84], Pseq([ 0, 23, 42, 65, 72, 84 ], 2), [0,23,42,65,84] ], 1),
+            // 1/1, 9/7, 3/2, 27/14, 9/8
+        Pseq([ [0,26,42,68,84], Pseq([ 0, 26, 42, 68, 72, 84 ], 2), [0,26,42,68,84] ], 1)
+        ], inf),
+    \dur, Pseq([ 1.2, Pseq([0.15], 12), 1.2], inf)
+).play
+)
+
+
+//The Duration Model
+
+(
+Pbind(
+	\dur, Pseq([ Pgeom(0.05, 1.1, 24), Pgeom(0.5, 0.909, 24)], inf),
+	\midinote, Pseq(#[60 ,58], inf)
+).play;
+)
+
+
+(
+Pbind(
+	\dur, 0.2,
+	\legato, Pseq([ Pseries(0.05, 0.05, 40), Pseries(2.05, -0.05, 40)], inf),
+	\midinote, Pseq(#[48, 51, 55, 58, 60, 58, 55, 51], inf)
+).play;
+)
 
 
 
