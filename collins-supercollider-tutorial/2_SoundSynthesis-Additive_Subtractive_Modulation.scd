@@ -429,18 +429,12 @@ Mix.fill(spectrum.size, {arg i;
 
 	var amp, freq;
 
-
-
 	freq= (spectrum[i]+(SinOsc.kr(modfreqs1[i],0,0.005)))*500;
 
 	amp= 0.1* Line.kr(1,0,decaytimes[i])*(SinOsc.ar(modfreqs2[i],0,0.1,0.9)* amplitudes[i]);
 
-
-
 	Pan2.ar(SinOsc.ar(freq, 0, amp),1.0.rand2)});
 
 }.scope
-
-
 
 )
