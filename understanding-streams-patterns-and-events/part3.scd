@@ -159,7 +159,31 @@ Task({
 }).play;
 )
 
+//Math operations with ListPatterns
+(
+var a, b;
+a = Pseq(#[60 ,62, 63, 65, 67, 63]);
+b = Pseq([a, a + 7, a + 5], inf).asStream;
+Task({
+	24.do({
+		Synth(\help_SPE3_SimpleSine, [\freq, b.next.midicps ]);
+		0.3.wait;
+	});
+}).play;
+)
 
+//Adding two patterns together, the second pattern transposes each fifth note down an octave
+(
+var a;
+a = Pseq(#[60, 62, 63, 65, 67, 63], inf) + Pseq(#[0, 0, 0, 0, -12], inf);
+a = a.asStream.midicps;
+Task({
+	25.do({
+		Synth(\help_SPE3_SimpleSine, [\freq, a.next]);
+		0.3.wait;
+	});
+}).play;
+)
 
 
 
