@@ -27,6 +27,164 @@ b = a.asStream;
 )
 
 
+//pass a function for the repeats variable that gets evaluated when the stream is created
+(
+var a, b;
+a = Pseq(#[1, 2], { rrand(1, 3) });
+b = a.asStream;
+7.do({ b.next.postln });
+)
+
+//repeats indefinitely  when inf for repeats variable
+(
+var a, b;
+a = Pseq(#[1, 2, 3], inf);
+b = a.asStream;
+10.do({ b.next.postln });
+)
+
+
+//Pseq as pitches, math operations like midicps can be used on streams
+(
+var a, d;
+a = Pseq(#[60, 61, 63, 65, 67, 63], inf).asStream.midicps;
+d = 0.3;
+Task({
+	12.do({
+		Synth(\help_SPE3_SimpleSine, [\freq, a.next, \sustain, d]);
+		d.wait;
+	});
+}).play;
+)
+
+
+//Pser
+(
+var a, b;
+a = Pser(#[1, 2, 3], 5);
+b = a.asStream;
+6.do({ b.next.postln });
+)
+
+
+(
+var a, b;
+a = Prand(#[1, 2, 3, 4, 5], 6);
+b = a.asStream;
+7.do({ b.next.postln });
+)
+
+//Prand used as a series of pitches
+(
+var a, d;
+a = Prand(#[60, 61, 63, 65], inf).midicps.asStream;
+d = 0.3;
+Task({
+	12.do({
+		Synth(\help_SPE3_SimpleSine, [\freq, a.next]);
+		d.wait;
+	});
+}).play;
+)
+
+//Pxrand
+
+(
+var a, b;
+a = Pxrand(#[60, 61, 63, 65], inf).midicps.asStream;
+d = 0.8;
+Task({
+	12.do({
+		Synth(\help_SPE3_SimpleSine, [\freq, a.next]);
+		d.wait;
+	});
+}).play;
+)
+
+
+//Pshuf scrambles
+(
+var a, b;
+a = Pshuf(#[1, 2, 3, 4], 3);
+b = a.asStream;
+13.do({ b.next.postln });
+)
+
+//Pshuf with pitches
+(
+var a, b;
+a = Pshuf(#[60, 61, 65, 67], inf).midicps.asStream;
+Task({
+	12.do({
+		Synth(\help_SPE3_SimpleSine, [\freq, a.next]);
+		0.5.wait;
+	});
+}).play;
+)
+
+//Nesting patterns
+(
+var a, b;
+a = Pseq([1, Pseq([100, 200], 2), 3], 3);
+b = a.asStream;
+19.do({b.next.postln});
+)
+
+//Pseqs nested in a Prand
+(
+var a, b;
+a = Prand([
+	Pseq([1, 2], 2),
+	Pseq([3, 4], 2),
+	Pseq([5, 6], 2)
+], 3);
+b = a.asStream;
+13.do({b.next.postln});
+)
+
+
+//Nested sequences of pitches
+(
+var a;
+a = Prand([
+	Pseq(#[60, 61, 63, 65, 67, 63]),
+	Pseq(#[72, 73, 75, 77, 79], 6),
+	Pseq(#[48, 53, 55, 58], 2),
+], inf).midicps.asStream;
+Task({
+	loop({
+		Synth(\help_SPE3_SimpleSine, [\freq, a.next]);
+		0.3.wait;
+	});
+}).play;
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
