@@ -120,7 +120,7 @@ var stream, dur;
 dur = 1/8;
 stream = Routine({
 	loop({
-		if(0.5.coin, {
+		if(0.25.coin, {
 			24.yield;
 			31.yield;
 			36.yield;
