@@ -1,5 +1,6 @@
 //Playing a predefined note sequence
-
+s.boot;
+Server.default.options("")
 //1. brute force
 (
 TempoClock.default.tempo = 84/60;
@@ -22,6 +23,7 @@ p = Pbind(
 	\dur, 0.25
 ).play;
 )
+s.boot;
 
 //3. Recognize pedal point
 (
@@ -34,7 +36,7 @@ p = Pbind(
 ).play;
 )
 
-//Multichannel expansion
+//"Multichannel"" expansion
 
 (
 p = Pbind(
@@ -47,6 +49,6 @@ p.stop;
 
 //Using custom SynthDefs (including unpitched SynthDefs)
 (
-b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11/wlk01.wav");
+b = Buffer.read(s, )
 )
 b.play;
