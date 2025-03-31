@@ -43,14 +43,50 @@ Ndef(\q3)[1] = \filter -> {
 
 (
 Ndef(\q3)[2] = \filter -> {
-	|in, pitch=0.5, pitchdispersion=0.1, timedispersion=0.1|
-	PitchShift.ar(in, 0.25, pitch, pitchdispersion, timedispersion)
+	|in, pitchy=0.5, pitchdispersion=0.1, timedispersion=0.1|
+	PitchShift.ar(in, 0.25, pitchy, pitchdispersion, timedispersion)
 }
 )
 
 Ndef(\q3).xset(\wet2, 0.0);
 Ndef(\q3).gui;
 
-//NodeProxy roles
+//Maybe a method from JITLibExtensions quark
+Ndef(\q3).addSpec(/*.....*/);
+
+//NodeProxy roles help file
+
+//change the range of the pitch argument from 0.25 to 10.0
+(
+Spec.specs[\freq]; //the default specification for the frequency parameter
+Spec.add(\pitchy, [0.25, 10.0, \lin, 0.0, 0.5, "piiiii"]);
+Spec.specs[\pitchy];
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
