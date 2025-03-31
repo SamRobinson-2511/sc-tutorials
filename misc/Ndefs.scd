@@ -42,7 +42,7 @@ Ndef(\q3)[1] = \filter -> {
 )
 
 (
-Ndef(\q3)[2] = \filter -> {
+Ndef(\q3)[1] = \filter -> {
 	|in, pitchy=0.5, pitchdispersion=0.1, timedispersion=0.1|
 	PitchShift.ar(in, 0.25, pitchy, pitchdispersion, timedispersion)
 }
@@ -62,6 +62,35 @@ Spec.specs[\freq]; //the default specification for the frequency parameter
 Spec.add(\pitchy, [0.25, 10.0, \lin, 0.0, 0.5, "piiiii"]);
 Spec.specs[\pitchy];
 )
+
+//////////
+Ndef(\q3).play;
+Ndef(\q3).copy(\q4);
+Ndef(\q4).xset(\freq, rrand(250, 500), \pan, rrand(-1.0, 1.0)).play;
+Ndef(\q3).stop;
+Ndef(\q3).xset(\freq, 80, \wet2, 0.9, \pitchy, 9);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
